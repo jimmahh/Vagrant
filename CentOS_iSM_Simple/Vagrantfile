@@ -1,0 +1,37 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$set_environment_variables = <<SCRIPT
+tee "/etc/profile.d/setVars.sh" > "/dev/null" <<EOF
+# JDK environment variables.
+export JAVA_HOME=/usr/java/jdk1.8.0_161
+# iSM environment variables
+export IWAY8=/iway/iway8/
+export PATH=$PATH:/iway/iway8/lib
+export LD_LIBRARY_PATH=/iway/iway8/lib:$LD_LIBRARY_PATH
+EOF
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+
+  config.vm.hostname = "DevISM.local"
+  config.vm.network :forwarded_port, guest: 9999, host: 19999
+  config.vm.network :forwarded_port, guest: 9000, host: 19000
+  config.vm.network :public_network, bridge: "en0: Wi-Fi (AirPort)"
+
+  config.vm.post_up_message = "Heyooo!"
+
+  # Setup mDNS so can be called by hostname with a dynamic IP
+  config.vm.provision :shell, path: "../Provisioning/Scripts/CentOS__mDNS_install.sh"
+  # Copy over JDK installer and install (removes installer at end)
+  config.vm.provision :file, source: "../Provisioning/Installers/jdk-8u161-linux-x64.rpm", destination: "jdk-8u161-linux-x64.rpm"
+  config.vm.provision :shell, path: "../Provisioning/Scripts/CentOS__JDK_1_8_161_install.sh"
+  # Copy over iSM 8 installer and install (removes installer and cruft at end)
+  config.vm.provision :file, source: "../Provisioning/Installers/iway80.jar", destination: "iway80.jar"
+  config.vm.provision :file, source: "../Provisioning/Installers/iway80_baseline.iss", destination: "iway80_baseline.iss"
+  config.vm.provision :shell, path: "../Provisioning/Scripts/CentOS__iSM80_install.sh", privileged: false
+  # Run inline script to set up env vars, etc (runs on each 'vagrant up')
+  config.vm.provision :shell, inline: $set_environment_variables, run: "always"
+
+end
