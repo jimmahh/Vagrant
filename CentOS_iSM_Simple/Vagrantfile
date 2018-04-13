@@ -12,6 +12,10 @@ export LD_LIBRARY_PATH=/iway/iway8/lib:$LD_LIBRARY_PATH
 EOF
 SCRIPT
 
+$start_ISM = <<SCRIPT
+/iway/iway8/bin/iSM_startService_sudo.sh base
+SCRIPT
+
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/7"
 
@@ -31,6 +35,9 @@ Vagrant.configure("2") do |config|
   config.vm.provision :file, source: "../Provisioning/Installers/iway80.jar", destination: "iway80.jar"
   config.vm.provision :file, source: "../Provisioning/Installers/iway80_baseline.iss", destination: "iway80_baseline.iss"
   config.vm.provision :shell, path: "../Provisioning/Scripts/CentOS__iSM80_install.sh", privileged: false
+  # Push over a modified start script and invoke to start in background
+  config.vm.provision :file, source: "../Provisioning/Scripts/iSM_startService_sudo.sh", destination: "/iway/iway8/bin/iSM_startService_sudo.sh", privileged: false
+  config.vm.provision :shell, inline: $start_ISM, privileged: false, run: "always"
   # Run inline script to set up env vars, etc (runs on each 'vagrant up')
   config.vm.provision :shell, inline: $set_environment_variables, run: "always"
 

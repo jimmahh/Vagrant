@@ -10,7 +10,5 @@ java -jar iway80.jar -r iway80_baseline.iss
 rm iway80.jar
 rm iway80_baseline.iss
 
-# install the bugger as an autostart service later
-# CURRENTLY JUST HAVE THE SILLY BUGGER RUN IN SHELL?
-
-/iway/iway8/iway8.sh base -l java
+# install the bugger as an autostart service 
+# Not sure how to do this tbf =)
