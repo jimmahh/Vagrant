@@ -13,6 +13,7 @@ EOF
 SCRIPT
 
 $start_ISM = <<SCRIPT
+chmod 776 /iway/iway8/bin/iSM_startService_sudo.sh 
 /iway/iway8/bin/iSM_startService_sudo.sh base
 SCRIPT
 
