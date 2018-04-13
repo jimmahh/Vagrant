@@ -42,7 +42,7 @@ cd $IWAY8SM/config/$1
 echo "Starting java"
 
 if [ "$UNAME" != 'OS400' -a "$UNAME" != 'OS/390' -a "X$1" = 'Xbase' ]; then
-   sudo $IWAYUSER -c "java $CP_AND_OPTIONS -Diwaysoftware.af.idocument=com.ibi.edaqm.XDDocument -DIWAY8=$IWAY8SM edaqm -service -config $@ >> $IWAY8SM/bin/service.log &"
+   sudo -i -u $IWAYUSER java $CP_AND_OPTIONS -Diwaysoftware.af.idocument=com.ibi.edaqm.XDDocument -DIWAY8=$IWAY8SM edaqm -service -config $@ >> $IWAY8SM/bin/service.log &
 else
    java $CP_AND_OPTIONS -Diwaysoftware.af.idocument=com.ibi.edaqm.XDDocument -DIWAY8=$IWAY8SM edaqm -service -config $@ >> $IWAY8SM/bin/service.log &
 fi
