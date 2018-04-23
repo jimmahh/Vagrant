@@ -4,7 +4,9 @@
 #
 #
 
-execute "update-upgrade" do
-  command "apt-get update && apt-get upgrade -y"
+
+# Update yum ahead of next steps
+execute "yum update" do
+  command "yum update"
   action :run
 end
