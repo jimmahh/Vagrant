@@ -1,0 +1,30 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$UpMsg = <<UPMSG
+---------------------------------------------------------------------
+Local iSM Dev Server, running headless (i.e. in the background)
+Type "vagrant ssh" to access via SSH
+
+iSM 8 running on CentOS 7
+
+URLS:
+ ---- iSM Console ------> http://DevISM.local:9999
+---------------------------------------------------------------------
+UPMSG
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7_withVBGA"
+
+  config.vbguest.auto_update = true
+
+  config.vm.hostname = "DevISM.local"
+  config.vm.network :public_network, bridge: "en0: Wi-Fi (AirPort)"
+
+  config.vm.post_up_message = "Heyooo!"
+
+#  config.vm.provision "chef_solo" do |chef|
+#    chef.add_recipe "apache::apache"
+#  end
+
+end
