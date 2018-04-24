@@ -4,6 +4,8 @@
 #
 #
 
+
+
 package "httpd" do
   action :install
 end
@@ -25,10 +27,20 @@ end
 
 # Virtual Hosts Files
 
-node["lamp-stack"]["sites"].each do |sitename, data|
+node["apache"]["sites"].each do |sitename, data|
   document_root = "/var/www/#{sitename}"
 
   directory document_root do
+    mode "0755"
+    recursive true
+  end
+
+  directory "/etc/httpd/sites-available" do
+    mode "0755"
+    recursive true
+  end
+
+  directory "/etc/httpd/sites-enabled" do
     mode "0755"
     recursive true
   end
@@ -50,10 +62,12 @@ node["lamp-stack"]["sites"].each do |sitename, data|
   end
 
   directory "/var/www/#{sitename}/public_html" do
+    mode "0777"
     action :create
   end
 
   directory "/var/www/#{sitename}/logs" do
+    mode "0777"
     action :create
   end
 end
