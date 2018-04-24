@@ -15,13 +15,12 @@ UPMSG
 
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/7_withVBGA"
-
   config.vbguest.auto_update = true
 
   config.vm.hostname = "DevISM.local"
   config.vm.network :public_network, bridge: "en0: Wi-Fi (AirPort)"
 
-  config.vm.post_up_message = "Heyooo!"
+  config.vm.post_up_message = $UpMsg
 
 #  config.vm.provision "chef_solo" do |chef|
 #    chef.add_recipe "apache::apache"
