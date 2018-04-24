@@ -57,17 +57,17 @@ node["apache"]["sites"].each do |sitename, data|
     notifies :restart, "service[httpd]"
   end
 
-  link '/etc/httpd/sites-enabled/#{sitename}.conf' do
-    to '/etc/httpd/sites-available/#{sitename}.conf'
+  link "/etc/httpd/sites-enabled/#{sitename}.conf" do
+    to "/etc/httpd/sites-available/#{sitename}.conf"
   end
 
   directory "/var/www/#{sitename}/public_html" do
-    mode "0777"
+    mode "0755"
     action :create
   end
 
   directory "/var/www/#{sitename}/logs" do
-    mode "0777"
+    mode "0755"
     action :create
   end
 end
