@@ -22,8 +22,11 @@ Vagrant.configure("2") do |config|
 
   config.vm.post_up_message = $UpMsg
 
-#  config.vm.provision "chef_solo" do |chef|
-#    chef.add_recipe "apache::apache"
-#  end
+  config.vm.provision "chef_solo" do |chef|
+    chef.add_recipe "iWay8::default"
+    chef.add_recipe "iWay8::mDNS"
+    chef.add_recipe "iWay8::JDK1_8"
+    chef.add_recipe "iWay8::iSM8"
+  end
 
 end
