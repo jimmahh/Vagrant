@@ -61,8 +61,7 @@ execute 'Init_EnvVars' do
 	action :run
 end
 
-# Do the bobbins to register as service and autostart
-# TBC!
+# Create stop/start scripts for iSM
 
 template "#{iSM_home}/bin/iSM_startService_sudo.sh" do
 	source 'iSM_startService_sudo.erb'
@@ -81,4 +80,28 @@ template "#{iSM_home}/bin/iSM_stopService_sudo.sh" do
 		:ISM_USER => iSM_user
 	)
 end
+
+# Register iSM base as service and autostart
+
+systemd_unit 'iSM.base' do
+  content(Unit: {
+            Description: 'iSM8 base service',
+          },
+          Service: {
+            ExecStart: "#{iSM_home}/bin/iSM_startService_sudo.sh base -l java",
+            ExecStop: "#{iSM_home}/bin/iSM_stopService_sudo.sh base",
+          },
+          Install: {
+            WantedBy: 'multi-user.target',
+          })
+  action [:create, :enable, :start]
+end
+
+
+#service "iSM_base" do
+#	supports :start => true, :stop => true, :restart => false, :reload => false, :status => false
+#	start_command "#{iSM_home}/bin/iSM_startService_sudo.sh base -l java"
+#	stop_command "#{iSM_home}/bin/iSM_stopService_sudo.sh base"
+#	action [:enable, :start]
+#end
 
