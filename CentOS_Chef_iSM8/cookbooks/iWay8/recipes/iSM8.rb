@@ -8,10 +8,11 @@
 iSM_home = '/iway/iway8'
 iSM_installer_name = 'iway80.jar'
 iSM_installer_dir = '/home/vagrant'
+iSM_user = 'vagrant'
 
 # Copy over the iSM installer
 cookbook_file "#{iSM_installer_dir}/#{iSM_installer_name}" do
-	source "#{iSM_installer_name}"
+	source iSM_installer_name
 	mode '0755'
 	action :create
 end
@@ -25,8 +26,8 @@ end
 
 # Create folder to install to and set ownership/permissions
 directory "#{iSM_home}" do
-	owner 'vagrant'
-	group 'vagrant'
+	owner iSM_user
+	group iSM_user
 	mode '0755'
 	recursive true
 end
@@ -34,8 +35,8 @@ end
 # Run the JAR install as the vagrant user
 
 execute 'iSM_Install' do
-	cwd "#{iSM_installer_dir}"
-	user 'vagrant'
+	cwd iSM_installer_dir
+	user iSM_user
 	command 'java -jar iway80.jar -r iway80_baseline.iss'
 	action :run
 end
@@ -47,8 +48,8 @@ directory '/etc/profile.d' do
 end
 
 template "/etc/profile.d/iSM8_EnvVars.sh" do
-	source "iSM8_EnvVars.erb"
-	mode "0755"
+	source 'iSM8_EnvVars.erb'
+	mode '0755'
 	variables(
 		:ISM_HOME => iSM_home
 	)
@@ -60,7 +61,24 @@ execute 'Init_EnvVars' do
 	action :run
 end
 
-
 # Do the bobbins to register as service and autostart
 # TBC!
+
+template "#{iSM_home}/bin/iSM_startService_sudo.sh" do
+	source 'iSM_startService_sudo.erb'
+	mode '0755'
+	variables(
+		:ISM_HOME => iSM_home,
+		:ISM_USER => iSM_user
+	)
+end
+
+template "#{iSM_home}/bin/iSM_stopService_sudo.sh" do
+	source 'iSM_stopService_sudo.erb'
+	mode '0755'
+	variables(
+		:ISM_HOME => iSM_home,
+		:ISM_USER => iSM_user
+	)
+end
 
