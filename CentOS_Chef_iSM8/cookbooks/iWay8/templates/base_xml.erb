@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<edaxml xmlns:eda="http://iwaysoftware.com" version="6.0">
+   <system>
+      <define>
+         <schema>
+            <name comment="" value="schemas\pfivp.xsd">PFIVP</name>
+            <name comment="" value="schemas\pfivpResponse.xsd">PFIVPResponse</name>
+            <name comment="A schema representing a definition for any document in and any document out" value="schemas\any.xsd">Any</name>
+         </schema>
+         <registers>
+            <parm name="ibse-port" type="integer">9000</parm>
+         </registers>
+         <agent>
+            <name category="Utility" comment="Moves input document to output destination" value="com.ibi.agents.XDMoveAgent">iwMove</name>
+            <name category="Utility" comment="Returns input document to output destination" value="com.ibi.agents.XDCopyAgent">iwCopy</name>
+            <name category="Transform" comment="A general transformations agent" value="com.ibi.agents.XDTransformAgent">iwTRANSFORM</name>
+            <name category="Utility" comment="Defines and sets special registers" value="com.ibi.agents.XDSREGAgent">iwSREG</name>
+            <name category="Utility" comment="Evaluates all elements of the current tree for iWay function calls" value="com.ibi.agents.EvalWalk">iwEvaluateTree</name>
+            <name category="Utility" comment="Copies a subtree of the indoc to the root of the outdoc" value="com.ibi.agents.XDSnipAgent">iwSnip</name>
+            <name category="Utility" comment="Causes a controled failure of this edge of the process" value="com.ibi.agents.XDFailAgent">iwFAIL</name>
+            <name category="Utility" comment="Turns other inlets (listeners) on or off under program control" value="com.ibi.agents.XDControlAgent">iwControl</name>
+            <name category="Utility" comment="Execute SQL statements" value="com.ibi.agents.XDSQLAgent">iwSQL</name>
+         </agent>
+      </define>
+      <settings>
+         <backups>5</backups>
+         <datadebugsize>4</datadebugsize>
+         <deadletter>deadletter</deadletter>
+         <ixtehome>./</ixtehome>
+         <log>true</log>
+         <logroot>log</logroot>
+         <info>true</info>
+         <error>true</error>
+         <warn>true</warn>
+         <wsafroot>sreg(iwayhome)/lib</wsafroot>
+         <wsdlroot>wsdl</wsdlroot>
+         <wsdriver>hsqldb</wsdriver>
+         <wsconn>jdbc:hsqldb:file:./ibsp</wsconn>
+         <wsdrivername>org.hsqldb.jdbcDriver</wsdrivername>
+         <wsuser>sa</wsuser>
+         <wspassword/>
+         <wsjdbcpool>false</wsjdbcpool>
+         <wspolicy>false</wspolicy>
+         <maxlogsize>512</maxlogsize>
+         <numlogstokeep>10</numlogstokeep>
+         <retryinterval>120</retryinterval>
+         <killinterval>60</killinterval>
+         <ucxpath>true</ucxpath>
+         <wsnsaware>true</wsnsaware>
+      </settings>
+      <properties>
+         <IBSP>
+            <prop name="DataStoreType">embedded</prop>
+            <prop name="DataProviderName">none</prop>
+         </IBSP>
+         <JDBC/>
+      </properties>
+      <transform>
+         <xmlg>
+            <name comment="Demonstrates XML to XML transformation with validation of the input data file using DTD." docType="xml" engine="iway" file="transforms/XML_to_XML_Sample1/XML_to_XML.gxp" shouldTrim="false">XML_to_XML_Sample1</name>
+            <name comment="Demonstrates XML to XML transformation with a use of context. For more information see help on context." docType="xml" engine="iway" file="transforms/XML_to_XML_Sample2/XML_to_XML_2.gxp" shouldTrim="false">XML_to_XML_Sample2</name>
+            <name comment="Demonstrated XML to HTML transformation using Table mode." docType="flat" file="transforms/XML_to_HTML_Table_Sample3/XML_to_HTML_Table.gxp" shouldTrim="false">XML_to_HTML_Table_Sample3</name>
+         </xmlg>
+      </transform>
+   </system>
+   <listener protocol="soap">SOAP1
+      <securityalgorithm>SunX509</securityalgorithm>
+      <encoding>UTF-8</encoding>
+      <precedence>1</precedence>
+      <active>true</active>
+      <count>3</count>
+      <linger>0</linger>
+      <srchar>%</srchar>
+      <keystoretype>JKS</keystoretype>
+      <timeout>2</timeout>
+      <port>SREG(ibse-port)</port>
+      <optimize>performance</optimize>
+      <securityprotocol>TLS</securityprotocol>
+      <flat>false</flat>
+      <autoReply>false</autoReply>
+      <truststoretype>JKS</truststoretype>
+      <needclientauth>false</needclientauth>
+      <localtrans>false</localtrans>
+      <securityprovider>com.sun.net.ssl.internal.ssl.Provider</securityprovider>
+      <file>cache</file>
+      <errpremit>false</errpremit>
+      <maxcount>10</maxcount>
+   </listener>
+</edaxml>
