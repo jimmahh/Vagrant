@@ -7,7 +7,7 @@
 
 java_home = '/usr/java/jdk1.8.0_161'
 java_rpm_name = 'jdk-8u161-linux-x64.rpm'
-java_installer_dir = '/home/vagrant'
+java_installer_dir = node[:JDK][:JDK_INSTALLER_PATH]
 
 # Copy over the RPM installer
 cookbook_file "#{java_installer_dir}/#{java_rpm_name}" do

@@ -2,6 +2,7 @@
 # vi: set ft=ruby :
 
 HOSTNAME = 'DevISM.local'
+JDK_INSTALLER_PATH = '/home/vagrant'
 
 $UpMsg = <<UPMSG
 ---------------------------------------------------------------------
@@ -34,6 +35,11 @@ Vagrant.configure("2") do |config|
     chef.add_recipe "iWay8::mDNS"
     chef.add_recipe "iWay8::JDK1_8"
     chef.add_recipe "iWay8::iSM8"
+    chef.json = {
+    	:JDK => {
+    		:JDK_INSTALLER_PATH => JDK_INSTALLER_PATH
+    	}
+    }
   end
 
 end
