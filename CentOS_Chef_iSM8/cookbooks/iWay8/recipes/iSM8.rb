@@ -37,7 +37,7 @@ end
 execute 'iSM_Install' do
 	cwd iSM_installer_dir
 	user iSM_user
-	environment ({'HOME' => '/home/vagrant', 'USER' => 'vagrant'}) 
+	environment ({'HOME' => "/home/#{iSM_user}", 'USER' => "#{iSM_user}"}) 
 	command 'java -jar iway80.jar -r iway80_baseline.iss'
 	action :run
 end
