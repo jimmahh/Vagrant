@@ -29,7 +29,7 @@ UNAME=`uname`
 
 cd $IWAY8SM/config/$1
 if [ $UNAME != 'OS400' -a $UNAME != 'OS/390' -a "X$1" = 'Xbase' ]; then
-   su -i -u $IWAYUSER java -cp \"$CLASSPATH\" -DIWAY8=$IWAY8SM com.ibi.service.edaqmServiceShutdown -c $1 > /dev/null &
+   sudo -i -u $IWAYUSER java -cp \"$CLASSPATH\" -DIWAY8=$IWAY8SM com.ibi.service.edaqmServiceShutdown -c $1 > /dev/null &
 else
    java -cp "$CLASSPATH" -DIWAY8=$IWAY8SM com.ibi.service.edaqmServiceShutdown -c $1 > /dev/null &
 fi

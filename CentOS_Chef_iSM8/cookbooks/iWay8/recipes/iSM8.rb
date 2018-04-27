@@ -94,9 +94,9 @@ end
 
 # Register iSM base as service and autostart
 
-systemd_unit 'iSM.base' do
+systemd_unit 'iSM_base.service' do
   content(Unit: {
-            Description: 'iSM8_base',
+            Description: 'iSM8 base',
           },
           Service: {
             ExecStart: "#{iSM_home}/bin/iSM_startService_sudo.sh base",
