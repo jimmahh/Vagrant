@@ -13,15 +13,16 @@ ISM_PORTS_CONSOLE_HTTP = '9999'
 ISM_PORTS_IBSP_SOAP = '9000'
 
 $UpMsg = <<UPMSG
----------------------------------------------------------------------
+-------------------------------------------------------------------------
 Local iSM Dev Server, running headless (i.e. in the background)
 Type "vagrant ssh" to access via SSH
 
 iSM 8 running on CentOS 7
 
 URLS:
- ---- iSM Console ------> http://#{HOSTNAME}:9999
----------------------------------------------------------------------
+ ---- iSM Console ------> http://#{HOSTNAME}:#{ISM_PORTS_CONSOLE_HTTP}
+ ---- iBSP -------------> http://#{HOSTNAME}:#{ISM_PORTS_IBSP_SOAP}
+-------------------------------------------------------------------------
 UPMSG
 
 Vagrant.configure("2") do |config|
