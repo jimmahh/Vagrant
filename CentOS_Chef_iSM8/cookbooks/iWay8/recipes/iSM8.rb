@@ -65,6 +65,8 @@ end
 
 template "#{iSM_home}/bin/iSM_startService_sudo.sh" do
 	source 'iSM_startService_sudo.erb'
+	owner iSM_user
+	group iSM_user
 	mode '0755'
 	variables(
 		:ISM_HOME => iSM_home,
@@ -74,6 +76,8 @@ end
 
 template "#{iSM_home}/bin/iSM_stopService_sudo.sh" do
 	source 'iSM_stopService_sudo.erb'
+	owner iSM_user
+	group iSM_user
 	mode '0755'
 	variables(
 		:ISM_HOME => iSM_home,
@@ -81,14 +85,21 @@ template "#{iSM_home}/bin/iSM_stopService_sudo.sh" do
 	)
 end
 
+# Create empty service.log in bin folder
+file "#{iSM_home}/bin/service.log" do
+	owner iSM_user
+	group iSM_user
+  	mode '0755'
+end
+
 # Register iSM base as service and autostart
 
 systemd_unit 'iSM.base' do
   content(Unit: {
-            Description: 'iSM8 base service',
+            Description: 'iSM8_base',
           },
           Service: {
-            ExecStart: "#{iSM_home}/bin/iSM_startService_sudo.sh base -l java",
+            ExecStart: "#{iSM_home}/bin/iSM_startService_sudo.sh base",
             ExecStop: "#{iSM_home}/bin/iSM_stopService_sudo.sh base",
           },
           Install: {
