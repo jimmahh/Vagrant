@@ -42,7 +42,7 @@ Vagrant.configure("2") do |config|
     	:JDK => {
     		:JDK_INSTALLER_PATH => JDK_INSTALLER_PATH
     	},
-    	:iSM8 => {
+    	:ISM8 => {
     		:ISM_HOME => ISM_HOME,
     		:ISM_INSTALLER_PATH => ISM_INSTALLER_PATH,
     		:ISM_USER => ISM_USER
