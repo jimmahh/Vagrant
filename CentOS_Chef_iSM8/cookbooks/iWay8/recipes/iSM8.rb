@@ -32,7 +32,7 @@ end
 #end
 
 # Create ISS file from template
-template "#{iSM_installer_dir}/bin/iway80.iss" do
+template "#{iSM_installer_dir}/iway80.iss" do
 	source 'iway80_baseline_iss.erb'
 	owner iSM_service_account
 	group iSM_service_account
