@@ -3,6 +3,9 @@
 
 HOSTNAME = 'DevISM.local'
 JDK_INSTALLER_PATH = '/home/vagrant'
+ISM_INSTALLER_PATH = '/home/vagrant'
+ISM_HOME = '/iway/iway8'
+ISM_USER = 'vagrant'
 
 $UpMsg = <<UPMSG
 ---------------------------------------------------------------------
@@ -38,6 +41,11 @@ Vagrant.configure("2") do |config|
     chef.json = {
     	:JDK => {
     		:JDK_INSTALLER_PATH => JDK_INSTALLER_PATH
+    	},
+    	:iSM8 => {
+    		:ISM_HOME => ISM_HOME,
+    		:ISM_INSTALLER_PATH => ISM_INSTALLER_PATH,
+    		:ISM_USER => ISM_USER
     	}
     }
   end

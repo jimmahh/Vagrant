@@ -5,10 +5,10 @@
 
 # Steps to install and configure iSM 8
 
-iSM_home = '/iway/iway8'
 iSM_installer_name = 'iway80.jar'
-iSM_installer_dir = '/home/vagrant'
-iSM_user = 'vagrant'
+iSM_home = node[:ISM8][:ISM_HOME]
+iSM_installer_dir = node[:ISM8][:ISM_INSTALLER_PATH]
+iSM_user = node[:ISM8][:ISM_USER]
 
 # Copy over the iSM installer
 cookbook_file "#{iSM_installer_dir}/#{iSM_installer_name}" do
@@ -111,12 +111,4 @@ systemd_unit 'iSM_base.service' do
           })
   action [:create, :enable, :start]
 end
-
-
-#service "iSM_base" do
-#	supports :start => true, :stop => true, :restart => false, :reload => false, :status => false
-#	start_command "#{iSM_home}/bin/iSM_startService_sudo.sh base -l java"
-#	stop_command "#{iSM_home}/bin/iSM_stopService_sudo.sh base"
-#	action [:enable, :start]
-#end
 
