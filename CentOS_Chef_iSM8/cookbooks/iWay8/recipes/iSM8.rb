@@ -104,6 +104,7 @@ systemd_unit 'iSM_base.service' do
           	Type: 'forking',
             ExecStart: "#{iSM_home}/bin/iSM_startService_sudo.sh base",
             ExecStop: "#{iSM_home}/bin/iSM_stopService_sudo.sh base",
+            SuccessExitStatus: '143',
           },
           Install: {
             WantedBy: 'multi-user.target',
