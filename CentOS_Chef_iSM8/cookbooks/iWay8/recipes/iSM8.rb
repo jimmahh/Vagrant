@@ -101,6 +101,7 @@ systemd_unit 'iSM_base.service' do
             Description: 'iSM8 base',
           },
           Service: {
+          	Type: 'forking',
             ExecStart: "#{iSM_home}/bin/iSM_startService_sudo.sh base",
             ExecStop: "#{iSM_home}/bin/iSM_stopService_sudo.sh base",
           },
