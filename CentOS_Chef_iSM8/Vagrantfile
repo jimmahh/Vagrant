@@ -2,17 +2,27 @@
 # vi: set ft=ruby :
 
 HOSTNAME = 'DevISM.local'
+JDK_INSTALLER_PATH = '/home/vagrant'
+ISM_INSTALLER_PATH = '/home/vagrant'
+ISM_HOME = '/iway/iway8'
+ISM_SERVICE_ACCOUNT = 'vagrant'
+ISM_LICENSE_DETAILS_USER_NAME = 'Chris Abernethy'
+ISM_LICENSE_DETAILS_COMPANY_NAME = 'Information Builders UK'
+ISM_LICENSE_DETAILS_SITECODE = '9999.13'
+ISM_PORTS_CONSOLE_HTTP = '9999'
+ISM_PORTS_IBSP_SOAP = '9000'
 
 $UpMsg = <<UPMSG
----------------------------------------------------------------------
+-------------------------------------------------------------------------
 Local iSM Dev Server, running headless (i.e. in the background)
 Type "vagrant ssh" to access via SSH
 
 iSM 8 running on CentOS 7
 
 URLS:
- ---- iSM Console ------> http://#{HOSTNAME}:9999
----------------------------------------------------------------------
+ ---- iSM Console ------> http://#{HOSTNAME}:#{ISM_PORTS_CONSOLE_HTTP}
+ ---- iBSP -------------> http://#{HOSTNAME}:#{ISM_PORTS_IBSP_SOAP}
+-------------------------------------------------------------------------
 UPMSG
 
 Vagrant.configure("2") do |config|
@@ -34,6 +44,25 @@ Vagrant.configure("2") do |config|
     chef.add_recipe "iWay8::mDNS"
     chef.add_recipe "iWay8::JDK1_8"
     chef.add_recipe "iWay8::iSM8"
+    chef.json = {
+    	:JDK => {
+    		:JDK_INSTALLER_PATH => JDK_INSTALLER_PATH
+    	},
+    	:ISM8 => {
+    		:ISM_HOME => ISM_HOME,
+    		:ISM_INSTALLER_PATH => ISM_INSTALLER_PATH,
+    		:ISM_SERVICE_ACCOUNT => ISM_SERVICE_ACCOUNT,
+    		:ISM_LICENSE_DETAILS => {
+    			:USER_NAME => ISM_LICENSE_DETAILS_USER_NAME,
+    			:COMPANY_NAME => ISM_LICENSE_DETAILS_COMPANY_NAME,
+    			:SITECODE => ISM_LICENSE_DETAILS_SITECODE
+    		},
+    		:ISM_PORTS => {
+    			:CONSOLE_HTTP => ISM_PORTS_CONSOLE_HTTP,
+    			:IBSP_SOAP => ISM_PORTS_IBSP_SOAP
+    		}
+    	}
+    }
   end
 
 end
