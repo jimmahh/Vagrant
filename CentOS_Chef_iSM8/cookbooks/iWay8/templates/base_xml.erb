@@ -8,7 +8,7 @@
             <name comment="A schema representing a definition for any document in and any document out" value="schemas\any.xsd">Any</name>
          </schema>
          <registers>
-            <parm name="ibse-port" type="integer">9000</parm>
+            <parm name="ibse-port" type="integer"><%= @ISM_PORTS_IBSP_SOAP %></parm>
          </registers>
          <agent>
             <name category="Utility" comment="Moves input document to output destination" value="com.ibi.agents.XDMoveAgent">iwMove</name>
@@ -29,9 +29,16 @@
          <ixtehome>./</ixtehome>
          <log>true</log>
          <logroot>log</logroot>
-         <info>true</info>
-         <error>true</error>
-         <warn>true</warn>
+         <info><%= @ISM_BASE_TRACE_INFO %></info>
+         <error><%= @ISM_BASE_TRACE_ERROR %></error>
+         <warn><%= @ISM_BASE_TRACE_WARN %></warn>
+         <debug><%= @ISM_BASE_TRACE_DEBUG %></debug>
+         <deepdebug><%= @ISM_BASE_TRACE_DEEPDEBUG %></deepdebug>
+         <treedebug><%= @ISM_BASE_TRACE_TREEDEBUG %></treedebug>
+         <datadebug><%= @ISM_BASE_TRACE_DATADEBUG %></datadebug>
+         <ruledebug><%= @ISM_BASE_TRACE_RULEDEBUG %></ruledebug>
+         <externaldebug><%= @ISM_BASE_TRACE_EXTERNALDEBUG %></externaldebug>
+         <tracedefer><%= @ISM_BASE_TRACE_TRACEDEFER %></tracedefer>
          <wsafroot>sreg(iwayhome)/lib</wsafroot>
          <wsdlroot>wsdl</wsdlroot>
          <wsdriver>hsqldb</wsdriver>

@@ -11,6 +11,17 @@ ISM_LICENSE_DETAILS_COMPANY_NAME = 'Information Builders UK'
 ISM_LICENSE_DETAILS_SITECODE = '9999.13'
 ISM_PORTS_CONSOLE_HTTP = '9999'
 ISM_PORTS_IBSP_SOAP = '9000'
+ISM_BASE_JVM_SETTING = '-Xmx256M -Xms128M'
+ISM_BASE_TRACE_ERROR = 'true'
+ISM_BASE_TRACE_INFO = 'true'
+ISM_BASE_TRACE_WARN = 'true'
+ISM_BASE_TRACE_DEBUG = 'true'
+ISM_BASE_TRACE_DEEPDEBUG = 'true'
+ISM_BASE_TRACE_TREEDEBUG = 'true'
+ISM_BASE_TRACE_DATADEBUG = 'true'
+ISM_BASE_TRACE_RULEDEBUG = 'true'
+ISM_BASE_TRACE_EXTERNALDEBUG = 'true'
+ISM_BASE_TRACE_TRACEDEFER = 'true'
 
 $UpMsg = <<UPMSG
 -------------------------------------------------------------------------
@@ -60,6 +71,20 @@ Vagrant.configure("2") do |config|
     		:ISM_PORTS => {
     			:CONSOLE_HTTP => ISM_PORTS_CONSOLE_HTTP,
     			:IBSP_SOAP => ISM_PORTS_IBSP_SOAP
+    		},
+    		:BASE => {
+    			:TRACE => {
+    				:ERROR => ERROR,
+    				:INFO => INFO,
+    				:WARN => WARN,
+    				:DEBUG => DEBUG,
+    				:DEEPDEBUG => DEEPDEBUG,
+    				:TREEDEBUG => TREEDEBUG,
+    				:DATADEBUG => DATADEBUG,
+    				:RULEDEBUG => RULEDENBUG,
+    				:EXTERNALDEBUG => EXTERNALDEBUG,
+    				:TRACEDEFER => TRACEDEFER
+    			}
     		}
     	}
     }

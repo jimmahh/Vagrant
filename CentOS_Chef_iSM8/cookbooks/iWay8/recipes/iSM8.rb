@@ -14,6 +14,16 @@ iSM_license_details_company_name = node[:ISM8][:ISM_LICENSE_DETAILS][:COMPANY_NA
 iSM_license_details_site_code = node[:ISM8][:ISM_LICENSE_DETAILS][:SITECODE]
 iSM_ports_console_http = node[:ISM8][:ISM_PORTS][:CONSOLE_HTTP]
 iSM_ports_ibsp_soap = node[:ISM8][:ISM_PORTS][:IBSP_SOAP]
+iSM_base_trace_error = node[:ISM8][:BASE][:TRACE][:ERROR]
+iSM_base_trace_info = node[:ISM8][:BASE][:TRACE][:INFO]
+iSM_base_trace_warn = node[:ISM8][:BASE][:TRACE][:WARN]
+iSM_base_trace_debug = node[:ISM8][:BASE][:TRACE][:DEBUG]
+iSM_base_trace_deepdebug = node[:ISM8][:BASE][:TRACE][:DEEPDEBUG]
+iSM_base_trace_treedebug = node[:ISM8][:BASE][:TRACE][:TREEDEBUG]
+iSM_base_trace_datadebug = node[:ISM8][:BASE][:TRACE][:DATADEBUG]
+iSM_base_trace_ruledebug = node[:ISM8][:BASE][:TRACE][:RULEDEBUG]
+iSM_base_trace_externaldebug = node[:ISM8][:BASE][:TRACE][:EXTERNALDEBUG]
+iSM_base_trace_tracedefer = node[:ISM8][:BASE][:TRACE][:TRACEDEFER]
 
 # Copy over the iSM installer
 cookbook_file "#{iSM_installer_dir}/#{iSM_installer_name}" do
@@ -23,13 +33,6 @@ cookbook_file "#{iSM_installer_dir}/#{iSM_installer_name}" do
 	mode '0755'
 	action :create
 end
-
-# Copy over the iSM installer baseline ISS file (replace this with templating later)
-#cookbook_file "#{iSM_installer_dir}/iway80_baseline.iss" do
-#	source 'iway80_baseline.iss'
-#	mode '0755'
-#	action :create
-#end
 
 # Create ISS file from template
 template "#{iSM_installer_dir}/iway80.iss" do
@@ -65,6 +68,38 @@ execute 'iSM_Install' do
 	command 'java -jar iway80.jar -r iway80.iss'
 	action :run
 end
+
+# Make backup copy of base.xml file
+execute 'base_XML_Backup' do
+	cwd "#{iSM_home}/config/base"
+	user iSM_service_account
+	group iSM_service_account
+	environment ({'HOME' => "/home/#{iSM_service_account}", 'USER' => "#{iSM_service_account}"}) 
+	command 'cp base.xml base_xml.backup'
+	action :run
+end
+
+# Replace the default base.xml with one customised with existing vars
+template "#{iSM_home}/config/base/base.xml" do
+	source 'base_xml.erb'
+	owner iSM_service_account
+	group iSM_service_account
+	mode '0755'
+	variables(
+		:ISM_PORTS_IBSP_SOAP => iSM_ports_ibsp_soap,
+		:ISM_BASE_TRACE_ERROR => iSM_base_trace_error,
+		:ISM_BASE_TRACE_INFO => iSM_base_trace_info,
+		:ISM_BASE_TRACE_WARN => iSM_base_trace_warn,
+		:ISM_BASE_TRACE_DEBUG => iSM_base_trace_debug,
+		:ISM_BASE_TRACE_DEEPDEBUG => iSM_base_trace_deepdebug,
+		:ISM_BASE_TRACE_TREEDEBUG => iSM_base_trace_treedebug,
+		:ISM_BASE_TRACE_DATADEBUG => iSM_base_trace_datadebug,
+		:ISM_BASE_TRACE_RULEDEBUG => iSM_base_trace_ruledebug,
+		:ISM_BASE_TRACE_EXTERNALDEBUG => iSM_base_trace_externaldebug,
+		:ISM_BASE_TRACE_TRACEDEFER => iSM_base_trace_tracedefer
+	)
+end
+
 
 # Set up environment variables 
 
