@@ -24,11 +24,12 @@
       </define>
       <settings>
          <backups>5</backups>
-         <datadebugsize>4</datadebugsize>
+         <datadebugsize><%= @ISM_BASE_LOG_DATADEBUGSIZE %></datadebugsize>
          <deadletter>deadletter</deadletter>
          <ixtehome>./</ixtehome>
-         <log>true</log>
-         <logroot>log</logroot>
+         <log><%= @ISM_BASE_LOG_ENABLED %></log>
+         <logroot><%= @ISM_BASE_LOG_LOCATION %></logroot>
+         <logtz><%= @ISM_BASE_LOG_TIMEZONE %></logtz>
          <info><%= @ISM_BASE_TRACE_INFO %></info>
          <error><%= @ISM_BASE_TRACE_ERROR %></error>
          <warn><%= @ISM_BASE_TRACE_WARN %></warn>
@@ -48,8 +49,8 @@
          <wspassword/>
          <wsjdbcpool>false</wsjdbcpool>
          <wspolicy>false</wspolicy>
-         <maxlogsize>512</maxlogsize>
-         <numlogstokeep>10</numlogstokeep>
+         <maxlogsize><%= @ISM_BASE_LOG_MAXFILESIZE %></maxlogsize>
+         <numlogstokeep><%= @ISM_BASE_LOG_MAXFILENUMBER %></numlogstokeep>
          <retryinterval>120</retryinterval>
          <killinterval>60</killinterval>
          <ucxpath>true</ucxpath>

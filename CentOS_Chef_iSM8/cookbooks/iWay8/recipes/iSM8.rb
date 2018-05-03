@@ -24,6 +24,13 @@ iSM_base_trace_datadebug = node[:ISM8][:BASE][:TRACE][:DATADEBUG]
 iSM_base_trace_ruledebug = node[:ISM8][:BASE][:TRACE][:RULEDEBUG]
 iSM_base_trace_externaldebug = node[:ISM8][:BASE][:TRACE][:EXTERNALDEBUG]
 iSM_base_trace_tracedefer = node[:ISM8][:BASE][:TRACE][:TRACEDEFER]
+iSM_base_jvm_setting = node[:ISM8][:BASE][:JVM_SETTING]
+iSM_base_log_enabled = node[:ISM8][:BASE][:LOG][:ENABLED]
+iSM_base_log_location = node[:ISM8][:BASE][:LOG][:LOCATION]
+iSM_base_log_timezone = node[:ISM8][:BASE][:LOG][:TIMEZONE]
+iSM_base_log_maxfilesize = node[:ISM8][:BASE][:LOG][:MAXDILESIZE]
+iSM_base_log_maxfilenumber = node[:ISM8][:BASE][:LOG][:MAXFILENUMBER]
+iSM_base_log_datadebugsize = node[:ISM8][:BASE][:LOG][:DATADEBUGSIZE]
 
 # Copy over the iSM installer
 cookbook_file "#{iSM_installer_dir}/#{iSM_installer_name}" do
@@ -96,7 +103,13 @@ template "#{iSM_home}/config/base/base.xml" do
 		:ISM_BASE_TRACE_DATADEBUG => iSM_base_trace_datadebug,
 		:ISM_BASE_TRACE_RULEDEBUG => iSM_base_trace_ruledebug,
 		:ISM_BASE_TRACE_EXTERNALDEBUG => iSM_base_trace_externaldebug,
-		:ISM_BASE_TRACE_TRACEDEFER => iSM_base_trace_tracedefer
+		:ISM_BASE_TRACE_TRACEDEFER => iSM_base_trace_tracedefer,
+		:ISM_BASE_LOG_ENABLED => iSM_base_log_enabled,
+		:ISM_BASE_LOG_LOCATION => iSM_base_log_location,
+		:ISM_BASE_LOG_TIMEZONE => iSM_base_log_timezone,
+		:ISM_BASE_LOG_MAXFILESIZE => iSM_base_log_maxfilesize,
+		:ISM_BASE_LOG_MAXFILENUMBER => iSM_base_log_maxfilenumber,
+		:ISM_BASE_LOG_DATADEBUGSIZE => iSM_base_log_datadebugsize
 	)
 end
 
