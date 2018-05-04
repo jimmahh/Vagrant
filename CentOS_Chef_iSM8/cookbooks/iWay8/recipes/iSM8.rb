@@ -113,6 +113,37 @@ template "#{iSM_home}/config/base/base.xml" do
 	)
 end
 
+# Make backup copy of config.xml file
+execute 'config_XML_Backup' do
+	cwd "#{iSM_home}/config"
+	user iSM_service_account
+	group iSM_service_account
+	environment ({'HOME' => "/home/#{iSM_service_account}", 'USER' => "#{iSM_service_account}"}) 
+	command 'cp config.xml config_xml.backup'
+	action :run
+end
+
+# Replace the default config.xml with one customised with existing vars
+template "#{iSM_home}/config/config.xml" do
+	source 'config_xml.erb'
+	owner iSM_service_account
+	group iSM_service_account
+	mode '0755'
+	variables(
+		:ISM_PORTS_CONSOLE_HTTP => iSM_ports_console_http,
+		:ISM_BASE_JVM_SETTING => iSM_base_jvm_setting
+	)
+end
+
+# Digitally resign config.xml
+execute 'config_XML_Resign' do
+	cwd "#{iSM_home}/bin"
+	user iSM_service_account
+	group iSM_service_account
+	environment ({'HOME' => "/home/#{iSM_service_account}", 'USER' => "#{iSM_service_account}"}) 
+	command "./signtree.sh -s #{iSM_home}/config/config.xml"
+	action :run
+end
 
 # Set up environment variables 
 
