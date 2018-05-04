@@ -1,36 +1,53 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-HOSTNAME = 'DevISM.local'
-JDK_INSTALLER_PATH = '/home/vagrant'
-ISM_INSTALLER_PATH = '/home/vagrant'
-ISM_HOME = '/iway/iway8'
-ISM_SERVICE_ACCOUNT = 'vagrant'
-ISM_LICENSE_DETAILS_USER_NAME = 'Chris Abernethy'
-ISM_LICENSE_DETAILS_COMPANY_NAME = 'Information Builders UK'
-ISM_LICENSE_DETAILS_SITECODE = '9999.13'
-ISM_PORTS_CONSOLE_HTTP = '9999'
-ISM_PORTS_IBSP_SOAP = '9000'
-
-ISM_BASE_TRACE_ERROR = 'true'
-ISM_BASE_TRACE_INFO = 'true'
-ISM_BASE_TRACE_WARN = 'true'
-ISM_BASE_TRACE_DEBUG = 'true'
-ISM_BASE_TRACE_DEEPDEBUG = 'true'
-ISM_BASE_TRACE_TREEDEBUG = 'true'
-ISM_BASE_TRACE_DATADEBUG = 'true'
-ISM_BASE_TRACE_RULEDEBUG = 'true'
-ISM_BASE_TRACE_EXTERNALDEBUG = 'true'
-ISM_BASE_TRACE_TRACEDEFER = 'true'
-
-ISM_BASE_JVM_SETTING = '-Xmx256M -Xms128M'
-
-ISM_BASE_LOG_ENABLED = 'true'
-ISM_BASE_LOG_LOCATION = 'log'
-ISM_BASE_LOG_TIMEZONE = 'GMT'
-ISM_BASE_LOG_MAXFILESIZE = '512'
-ISM_BASE_LOG_MAXFILENUMBER = '20'
-ISM_BASE_LOG_DATADEBUGSIZE = '4'
+JSON_Config = {
+				:SERVER => {
+					:HOSTNAME => 'DevISM.local',
+					:MEMORY => '1024',
+					:CPUS => '1'
+				},
+				:JDK => {
+    				:JDK_INSTALLER_PATH => '/home/vagrant'
+    			},
+		    	:ISM8 => {
+		    		:ISM_HOME => '/iway/iway8',
+		    		:ISM_INSTALLER_PATH => '/home/vagrant',
+		    		:ISM_SERVICE_ACCOUNT => 'vagrant',
+		    		:ISM_LICENSE_DETAILS => {
+		    			:USER_NAME => 'Chris Abernethy',
+		    			:COMPANY_NAME => 'Information Builders UK',
+		    			:SITECODE => '9999.13'
+		    		},
+		    		:ISM_PORTS => {
+		    			:CONSOLE_HTTP => '9999',
+		    			:IBSP_SOAP => '9000'
+		    		},
+		    		:BASE => {
+		    			:TRACE => {
+		    				:ERROR => 'true',
+		    				:INFO => 'true',
+		    				:WARN => 'true',
+		    				:DEBUG => 'true',
+		    				:DEEPDEBUG => 'true',
+		    				:TREEDEBUG => 'true',
+		    				:DATADEBUG => 'true',
+		    				:RULEDEBUG => 'true',
+		    				:EXTERNALDEBUG => 'true',
+		    				:TRACEDEFER => 'true'
+		    			},
+		    			:JVM_SETTING => '-Xmx256M -Xms128M',
+		    			:LOG => {
+		    				:ENABLED => 'true',
+		    				:LOCATION => 'log',
+		    				:TIMEZONE => 'GMT',
+		    				:MAXFILESIZE => '512',
+		    				:MAXFILENUMBER => '20',
+		    				:DATADEBUGSIZE => '4'
+		    			}
+		    		}
+		    	}
+			}
 
 $UpMsg = <<UPMSG
 -------------------------------------------------------------------------
@@ -40,8 +57,8 @@ Type "vagrant ssh" to access via SSH
 iSM 8 running on CentOS 7
 
 URLS:
- ---- iSM Console ------> http://#{HOSTNAME}:#{ISM_PORTS_CONSOLE_HTTP}
- ---- iBSP -------------> http://#{HOSTNAME}:#{ISM_PORTS_IBSP_SOAP}
+ ---- iSM Console ------> http://#{JSON_Config[:SERVER][:HOSTNAME]}:#{JSON_Config[:ISM8][:ISM_PORTS][:CONSOLE_HTTP]}
+ ---- iBSP -------------> http://#{JSON_Config[:SERVER][:HOSTNAME]}:#{JSON_Config[:ISM8][:ISM_PORTS][:IBSP_SOAP]}
 -------------------------------------------------------------------------
 UPMSG
 
@@ -50,11 +67,11 @@ Vagrant.configure("2") do |config|
   config.vbguest.auto_update = true
 
   config.vm.provider 'virtualbox' do |vb|
-  	vb.memory = '1024'
-  	vb.cpus = '1'
+  	vb.memory = JSON_Config[:SERVER][:MEMORY]
+  	vb.cpus = JSON_Config[:SERVER][:CPUS]
   end
 
-  config.vm.hostname = HOSTNAME
+  config.vm.hostname = JSON_Config[:SERVER][:HOSTNAME]
   config.vm.network :public_network, bridge: "en0: Wi-Fi (AirPort)"
 
   config.vm.post_up_message = $UpMsg
@@ -64,48 +81,7 @@ Vagrant.configure("2") do |config|
     chef.add_recipe "iWay8::mDNS"
     chef.add_recipe "iWay8::JDK1_8"
     chef.add_recipe "iWay8::iSM8"
-    chef.json = {
-    	:JDK => {
-    		:JDK_INSTALLER_PATH => JDK_INSTALLER_PATH
-    	},
-    	:ISM8 => {
-    		:ISM_HOME => ISM_HOME,
-    		:ISM_INSTALLER_PATH => ISM_INSTALLER_PATH,
-    		:ISM_SERVICE_ACCOUNT => ISM_SERVICE_ACCOUNT,
-    		:ISM_LICENSE_DETAILS => {
-    			:USER_NAME => ISM_LICENSE_DETAILS_USER_NAME,
-    			:COMPANY_NAME => ISM_LICENSE_DETAILS_COMPANY_NAME,
-    			:SITECODE => ISM_LICENSE_DETAILS_SITECODE
-    		},
-    		:ISM_PORTS => {
-    			:CONSOLE_HTTP => ISM_PORTS_CONSOLE_HTTP,
-    			:IBSP_SOAP => ISM_PORTS_IBSP_SOAP
-    		},
-    		:BASE => {
-    			:TRACE => {
-    				:ERROR => ISM_BASE_TRACE_ERROR,
-    				:INFO => ISM_BASE_TRACE_INFO,
-    				:WARN => ISM_BASE_TRACE_WARN,
-    				:DEBUG => ISM_BASE_TRACE_DEBUG,
-    				:DEEPDEBUG => ISM_BASE_TRACE_DEEPDEBUG,
-    				:TREEDEBUG => ISM_BASE_TRACE_TREEDEBUG,
-    				:DATADEBUG => ISM_BASE_TRACE_DATADEBUG,
-    				:RULEDEBUG => ISM_BASE_TRACE_RULEDEBUG,
-    				:EXTERNALDEBUG => ISM_BASE_TRACE_EXTERNALDEBUG,
-    				:TRACEDEFER => ISM_BASE_TRACE_TRACEDEFER
-    			},
-    			:JVM_SETTING => ISM_BASE_JVM_SETTING,
-    			:LOG => {
-    				:ENABLED => ISM_BASE_LOG_ENABLED,
-    				:LOCATION => ISM_BASE_LOG_LOCATION,
-    				:TIMEZONE => ISM_BASE_LOG_TIMEZONE,
-    				:MAXFILESIZE => ISM_BASE_LOG_MAXFILESIZE,
-    				:MAXFILENUMBER => ISM_BASE_LOG_MAXFILENUMBER,
-    				:DATADEBUGSIZE => ISM_BASE_LOG_DATADEBUGSIZE
-    			}
-    		}
-    	}
-    }
+    chef.json = JSON_Config
   end
 
 end
