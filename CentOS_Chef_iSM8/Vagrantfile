@@ -49,7 +49,7 @@ JSON_Config = {
 		    		:EXTRA_JARS => {
 		    			:LIB => ['sqljdbc42.jar', 'ojdbc8.jar'],
 		    			:EXTENSIONS => [],
-		    			:TRANSFORM => []
+		    			:TRANSFORMATIONS => []
 		    		}
 		    	}
 			}

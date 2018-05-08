@@ -33,7 +33,7 @@ iSM_base_log_maxfilenumber = node[:ISM8][:BASE][:LOG][:MAXFILENUMBER]
 iSM_base_log_datadebugsize = node[:ISM8][:BASE][:LOG][:DATADEBUGSIZE]
 iSM_extra_jars_lib = node[:ISM8][:EXTRA_JARS][:LIB]
 iSM_extra_jars_extensions = node[:ISM8][:EXTRA_JARS][:EXTENSIONS]
-iSM_extra_jars_transform = node[:ISM8][:EXTRA_JARS][:TRANSFORM]
+iSM_extra_jars_transformations = node[:ISM8][:EXTRA_JARS][:TRANSFORMATIONS]
 
 
 # Copy over the iSM installer
@@ -169,6 +169,27 @@ iSM_extra_jars_lib.each do |this_file|
 		mode '0644'
 	end
 end
+
+# Copy in any additional jars for the 'extensions' folder
+iSM_extra_jars_extensions.each do |this_file|
+	cookbook_file "#{iSM_home}/etc/manager/extensions/" + this_file do
+		source this_file
+		owner iSM_service_account
+		group iSM_service_account
+		mode '0644'
+	end
+end
+
+# Copy in any additional jars for the 'transformations' folder
+iSM_extra_jars_transformations.each do |this_file|
+	cookbook_file "#{iSM_home}/etc/manager/transformations/custom_functions/" + this_file do
+		source this_file
+		owner iSM_service_account
+		group iSM_service_account
+		mode '0644'
+	end
+end
+
 
 # Set up environment variables 
 
