@@ -135,6 +135,17 @@ template "#{iSM_home}/config/config.xml" do
 	)
 end
 
+# Replace the default signtree.sh script with corrected one
+template "#{iSM_home}/bin/signtree.sh" do
+	source 'signtree_sh.erb'
+	owner iSM_service_account
+	group iSM_service_account
+	mode '0755'
+	variables(
+		:ISM_HOME => iSM_home
+	)
+end
+
 # Digitally resign config.xml
 execute 'config_XML_Resign' do
 	cwd "#{iSM_home}/bin"
