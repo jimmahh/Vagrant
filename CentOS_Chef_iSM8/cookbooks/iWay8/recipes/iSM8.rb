@@ -31,6 +31,10 @@ iSM_base_log_timezone = node[:ISM8][:BASE][:LOG][:TIMEZONE]
 iSM_base_log_maxfilesize = node[:ISM8][:BASE][:LOG][:MAXDILESIZE]
 iSM_base_log_maxfilenumber = node[:ISM8][:BASE][:LOG][:MAXFILENUMBER]
 iSM_base_log_datadebugsize = node[:ISM8][:BASE][:LOG][:DATADEBUGSIZE]
+iSM_extra_jars_lib = node[:ISM8][:EXTRA_JARS][:LIB]
+iSM_extra_jars_extensions = node[:ISM8][:EXTRA_JARS][:EXTENSIONS]
+iSM_extra_jars_transform = node[:ISM8][:EXTRA_JARS][:TRANSFORM]
+
 
 # Copy over the iSM installer
 cookbook_file "#{iSM_installer_dir}/#{iSM_installer_name}" do
@@ -154,6 +158,16 @@ execute 'config_XML_Resign' do
 	environment ({'HOME' => "/home/#{iSM_service_account}", 'USER' => "#{iSM_service_account}"}) 
 	command "./signtree.sh -s #{iSM_home}/config/config.xml"
 	action :run
+end
+
+# Copy in any additional jars for the 'lib' folder
+iSM_extra_jars_lib.each do |this_file|
+	cookbook_file "#{iSM_home}/lib/" + this_file do
+		source this_file
+		owner iSM_service_account
+		group iSM_service_account
+		mode '0644'
+	end
 end
 
 # Set up environment variables 

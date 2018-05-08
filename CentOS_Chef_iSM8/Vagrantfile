@@ -45,6 +45,11 @@ JSON_Config = {
 		    				:MAXFILENUMBER => '20',
 		    				:DATADEBUGSIZE => '4'
 		    			}
+		    		},
+		    		:EXTRA_JARS => {
+		    			:LIB => ['sqljdbc42.jar', 'ojdbc8.jar'],
+		    			:EXTENSIONS => [],
+		    			:TRANSFORM => []
 		    		}
 		    	}
 			}
