@@ -1,0 +1,13 @@
+#!/bin/sh
+
+echo "----------------------------------------------------------------"
+echo "iWay Service Manager - XML Signature Utility"
+echo "Copyright (C) 2003-2017, iWay Software/Information Builders, Inc."
+echo "All Rights Reserved."
+echo "----------------------------------------------------------------"
+
+IWAY8SM=<%= @ISM_HOME %>
+export IWAY8SM
+
+CLASSPATH="$IWAY8SM/lib/*:$IWAY8SM/etc/manager/extensions/iwdevkit.jar"
+java -cp "$CLASSPATH" -DIWAY8=$IWAY8SM com.ibi.tools.SignTree $@

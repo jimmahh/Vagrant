@@ -2,34 +2,34 @@
 
 unset CDPATH
 
+source /etc/profile.d/jdk.sh
+source /etc/profile.d/iSM8_EnvVars.sh
+
+export IWAY8SM=$IWAY8
+
+MYUSER=$(whoami)
+
 echo "----------------------------------------------------------------"
 echo "Shutdown iWay Service Manager - 8.0.0.101"
 echo "Copyright (C) 2003-2017, iWay Software/Information Builders, Inc."
 echo "All Rights Reserved."
 echo "----------------------------------------------------------------"
+echo "Running as: $MYUSER"
+echo "----------------------------------------------------------------"
+echo "Environment settings:"
+echo " "
+printenv
+echo "----------------------------------------------------------------"
+
 if [ $# -ne 1 -o "X$1" = 'X-h' -o "X$1" = 'X-help' ]; then
    echo "Usage: $0 <IWAYCONFIG>"
    exit 2
 fi
 
-IWAY8SM=<%= @ISM_HOME %>
-IWAYUSER=<%= @ISM_USER %>
-MOD=""
-
-if [ `uname` = 'OS400' ]; then
-   export QIBM_MULTI_THREADED=y
-   MOD=-s
-fi
-
-export $MOD IWAY8SM
 echo IWAY8SM home directory: $IWAY8SM
 
 CLASSPATH=`echo $IWAY8SM/config/$1/lib/*.jar $IWAY8SM/lib/*.jar $IWAY8SM/etc/manager/extensions/*.jar $IWAY8SM/etc/manager/console/*.jar $IWAY8SM/etc/manager/transformations/custom_functions/*.jar $IWAY8SM/etc/manager/transformations/custom_functions/ | tr ' ' ':'`
-UNAME=`uname`
 
 cd $IWAY8SM/config/$1
-if [ $UNAME != 'OS400' -a $UNAME != 'OS/390' -a "X$1" = 'Xbase' ]; then
-   sudo -i -u $IWAYUSER java -cp \"$CLASSPATH\" -DIWAY8=$IWAY8SM com.ibi.service.edaqmServiceShutdown -c $1 > /dev/null &
-else
-   java -cp "$CLASSPATH" -DIWAY8=$IWAY8SM com.ibi.service.edaqmServiceShutdown -c $1 > /dev/null &
-fi
+
+java -cp \"$CLASSPATH\" -DIWAY8=$IWAY8SM com.ibi.service.edaqmServiceShutdown -c $1 > /dev/null &
