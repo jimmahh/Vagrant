@@ -1,0 +1,83 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+JSON_Config = {
+        :SERVER => {
+          :HOSTNAME => 'DevISM',
+          :MEMORY => '1024',
+          :CPUS => '1'
+        },
+        :JDK => {
+            :JDK_INSTALLER_PATH => '/home/vagrant'
+          },
+          :ISM8 => {
+            :ISM_HOME => '/iway/iway8',
+            :ISM_INSTALLER_PATH => '/home/vagrant',
+            :ISM_SERVICE_ACCOUNT => 'vagrant',
+            :ISM_LICENSE_DETAILS => {
+              :USER_NAME => 'Chris Abernethy',
+              :COMPANY_NAME => 'Information Builders UK',
+              :SITECODE => '9999.13'
+            },
+            :ISM_PORTS => {
+              :CONSOLE_HTTP => '9999',
+              :IBSP_SOAP => '9000'
+            },
+            :BASE => {
+              :TRACE => {
+                :ERROR => 'true',
+                :INFO => 'true',
+                :WARN => 'true',
+                :DEBUG => 'true',
+                :DEEPDEBUG => 'true',
+                :TREEDEBUG => 'true',
+                :DATADEBUG => 'true',
+                :RULEDEBUG => 'true',
+                :EXTERNALDEBUG => 'true',
+                :TRACEDEFER => 'true'
+              },
+              :JVM_SETTING => '-Xmx256M -Xms128M',
+              :LOG => {
+                :ENABLED => 'true',
+                :LOCATION => 'log',
+                :TIMEZONE => 'GMT',
+                :MAXFILESIZE => '512',
+                :MAXFILENUMBER => '20',
+                :DATADEBUGSIZE => '4'
+              }
+            },
+            :EXTRA_JARS => {
+              :LIB => ['sqljdbc42.jar', 'ojdbc8.jar'],
+              :EXTENSIONS => [],
+              :TRANSFORMATIONS => []
+            }
+          }
+      }
+
+$UpMsg = <<UPMSG
+-------------------------------------------------------------------------
+Local iSM Dev Server, running headless (i.e. in the background)
+Type "vagrant ssh" to access via SSH
+
+iSM 8 running on CentOS 7
+
+URLS:
+ ---- iSM Console ------> http://#{JSON_Config[:SERVER][:HOSTNAME]}:#{JSON_Config[:ISM8][:ISM_PORTS][:CONSOLE_HTTP]}
+ ---- iBSP -------------> http://#{JSON_Config[:SERVER][:HOSTNAME]}:#{JSON_Config[:ISM8][:ISM_PORTS][:IBSP_SOAP]}
+-------------------------------------------------------------------------
+UPMSG
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "gusztavvargadr/windows-10"
+  config.vbguest.auto_update = true
+
+  config.vm.provider 'virtualbox' do |vb|
+    vb.memory = JSON_Config[:SERVER][:MEMORY]
+    vb.cpus = JSON_Config[:SERVER][:CPUS]
+  end
+
+  config.vm.hostname = JSON_Config[:SERVER][:HOSTNAME]
+  config.vm.network :public_network, bridge: "en0: Wi-Fi (AirPort)"
+
+  config.vm.post_up_message = $UpMsg
+end
