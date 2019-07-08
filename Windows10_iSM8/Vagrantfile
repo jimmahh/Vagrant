@@ -68,11 +68,11 @@ $UpMsg = <<UPMSG
 Local iSM Dev Server, running headless (i.e. in the background)
 Type "vagrant ssh" to access via SSH
 
-iSM 8 running on CentOS 7
+iSM 8 running on Windows 10
 
 URLS:
- ---- iSM Console ------> http://#{JSON_Config[:SERVER][:HOSTNAME]}:#{JSON_Config[:ISM8][:ISM_PORTS][:CONSOLE_HTTP]}
- ---- iBSP -------------> http://#{JSON_Config[:SERVER][:HOSTNAME]}:#{JSON_Config[:ISM8][:ISM_PORTS][:IBSP_SOAP]}
+ ---- iSM Console ------> http://#{JSON_Config[:SERVER][:HOSTNAME]}.local:#{JSON_Config[:ISM8][:ISM_PORTS][:CONSOLE_HTTP]}
+ ---- iBSP -------------> http://#{JSON_Config[:SERVER][:HOSTNAME]}.local:#{JSON_Config[:ISM8][:ISM_PORTS][:IBSP_SOAP]}
 -------------------------------------------------------------------------
 UPMSG
 
