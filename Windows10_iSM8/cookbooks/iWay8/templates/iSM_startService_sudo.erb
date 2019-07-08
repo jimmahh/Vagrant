@@ -1,0 +1,42 @@
+#!/bin/sh
+
+unset CDPATH
+
+source /etc/profile.d/jdk.sh
+source /etc/profile.d/iSM8_EnvVars.sh
+
+export IWAY8SM=$IWAY8
+
+MYUSER=$(whoami)
+
+echo "----------------------------------------------------------------"
+echo "Start iWay Service Manager - 8.0.0.101"
+echo "Copyright (C) 2003-2017, iWay Software/Information Builders, Inc."
+echo "All Rights Reserved."
+echo "----------------------------------------------------------------"
+echo "Running as: $MYUSER"
+echo "----------------------------------------------------------------"
+echo "Environment settings:"
+echo " "
+printenv
+echo "----------------------------------------------------------------"
+
+if [ $# -ne 1 -o "X$1" = 'X-h' -o "X$1" = 'X-help' ]; then
+   echo "Usage: $0 <IWAYCONFIG>"
+   exit 2
+fi
+
+DEFAULT_CP=`echo $IWAY8SM/config/$1/lib/*.jar $IWAY8SM/lib/*.jar $IWAY8SM/etc/manager/extensions/*.jar $IWAY8SM/etc/manager/console/*.jar $IWAY8SM/etc/manager/transformations/custom_functions/*.jar $IWAY8SM/etc/manager/transformations/custom_functions/ | tr ' ' ':'`
+CP_AND_OPTIONS=`java -cp $DEFAULT_CP -DIWAY8=$IWAY8SM ISMParse -config $1 -srvr.cp $DEFAULT_CP`
+
+echo ""
+echo "----------------------------------------------------------------"
+echo IWAY8SM home directory: $IWAY8SM
+echo "iSM will start with classpath and JVM options: $CP_AND_OPTIONS"
+echo "----------------------------------------------------------------"
+echo ""
+
+cd $IWAY8SM/config/$1
+echo "Starting java"
+
+java $CP_AND_OPTIONS -Diwaysoftware.af.idocument=com.ibi.edaqm.XDDocument -DIWAY8=$IWAY8SM edaqm -service -config $@ >> $IWAY8SM/bin/service.log &
