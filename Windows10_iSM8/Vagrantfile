@@ -4,7 +4,7 @@
 JSON_Config = {
         :SERVER => {
           :HOSTNAME => 'DevISM',
-          :MEMORY => '1024',
+          :MEMORY => '4096',
           :CPUS => '1'
         },
         :JDK => {
