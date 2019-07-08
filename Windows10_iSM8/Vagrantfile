@@ -10,48 +10,57 @@ JSON_Config = {
         :JDK => {
             :JDK_INSTALLER_PATH => 'C:/Users/vagrant/Documents'
           },
-          :ISM8 => {
-            :ISM_HOME => '/iway/iway8',
-            :ISM_INSTALLER_PATH => '/home/vagrant',
-            :ISM_SERVICE_ACCOUNT => 'vagrant',
-            :ISM_LICENSE_DETAILS => {
-              :USER_NAME => 'Chris Abernethy',
-              :COMPANY_NAME => 'Information Builders UK',
-              :SITECODE => '9999.13'
+        "java": {
+          "jdk_version": "8",
+          "install_flavor": "windows",
+          "windows": {
+            "url": "file:///C:/vagrant/cookbooks/iWay8/files/jdk-8u211-windows-x64.exe",
+            "package_name": "Java SE Development Kit 8 Update 211 (64-bit)"
+          },
+          "java_home": "C:/Program Files/Java/jdk1.8.0_211"
+        },
+        :ISM8 => {
+          :ISM_HOME => '/iway/iway8',
+          :ISM_INSTALLER_PATH => '/home/vagrant',
+          :ISM_SERVICE_ACCOUNT => 'vagrant',
+          :ISM_LICENSE_DETAILS => {
+            :USER_NAME => 'Chris Abernethy',
+            :COMPANY_NAME => 'Information Builders UK',
+            :SITECODE => '9999.13'
+          },
+          :ISM_PORTS => {
+            :CONSOLE_HTTP => '9999',
+            :IBSP_SOAP => '9000'
+          },
+          :BASE => {
+            :TRACE => {
+              :ERROR => 'true',
+              :INFO => 'true',
+              :WARN => 'true',
+              :DEBUG => 'true',
+              :DEEPDEBUG => 'true',
+              :TREEDEBUG => 'true',
+              :DATADEBUG => 'true',
+              :RULEDEBUG => 'true',
+              :EXTERNALDEBUG => 'true',
+              :TRACEDEFER => 'true'
             },
-            :ISM_PORTS => {
-              :CONSOLE_HTTP => '9999',
-              :IBSP_SOAP => '9000'
-            },
-            :BASE => {
-              :TRACE => {
-                :ERROR => 'true',
-                :INFO => 'true',
-                :WARN => 'true',
-                :DEBUG => 'true',
-                :DEEPDEBUG => 'true',
-                :TREEDEBUG => 'true',
-                :DATADEBUG => 'true',
-                :RULEDEBUG => 'true',
-                :EXTERNALDEBUG => 'true',
-                :TRACEDEFER => 'true'
-              },
-              :JVM_SETTING => '-Xmx256M -Xms128M',
-              :LOG => {
-                :ENABLED => 'true',
-                :LOCATION => 'log',
-                :TIMEZONE => 'GMT',
-                :MAXFILESIZE => '512',
-                :MAXFILENUMBER => '20',
-                :DATADEBUGSIZE => '4'
-              }
-            },
-            :EXTRA_JARS => {
-              :LIB => ['sqljdbc42.jar', 'ojdbc8.jar'],
-              :EXTENSIONS => [],
-              :TRANSFORMATIONS => []
+            :JVM_SETTING => '-Xmx256M -Xms128M',
+            :LOG => {
+              :ENABLED => 'true',
+              :LOCATION => 'log',
+              :TIMEZONE => 'GMT',
+              :MAXFILESIZE => '512',
+              :MAXFILENUMBER => '20',
+              :DATADEBUGSIZE => '4'
             }
+          },
+          :EXTRA_JARS => {
+            :LIB => ['sqljdbc42.jar', 'ojdbc8.jar'],
+            :EXTENSIONS => [],
+            :TRANSFORMATIONS => []
           }
+        }
       }
 
 $UpMsg = <<UPMSG
@@ -84,9 +93,10 @@ Vagrant.configure("2") do |config|
   config.vm.provision "chef_solo" do |chef|
     chef.custom_config_path = "CustomConfiguration.chef"
  #   chef.add_recipe "iWay8::mDNS"
-    chef.roles_path = "roles"
-    chef.add_role("has_OracleJava")
+ #   chef.roles_path = "roles"
+ #   chef.add_role("has_OracleJava")
  #   chef.add_recipe "iWay8::rebootMachine"
+    chef.add_recipe "java"
     chef.json = JSON_Config
   end
 
