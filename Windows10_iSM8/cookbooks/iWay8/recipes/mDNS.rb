@@ -3,20 +3,21 @@
 # Recipe:: mDNS
 #
 
-# Steps to configure mDNS
+# Steps to configure allow machine to be pinged from MacOS
 # ----------------------------------------------------------
 
-# A zero-congig mDNS package
-package "avahi" do
-  action :install
+# Disable LLMNR via the registry
+registry_key "HKEY_LOCAL_MACHINE\\Software\\Policies\\Microsoft\\Windows NT\\DNSClient" do
+  values [{
+    name: 'EnableMulticast',
+    type: :dword,
+    data: 0
+  }]
+  action :create
 end
 
-# A package for command-line tools for mDNS browsing and publishing
-package "avahi-tools" do
+# Install Bonjour
+windows_package 'Bonjour64' do
   action :install
-end
-
-# Registers avahi as an auto-start background service
-service "avahi-daemon" do
-  action [:enable, :start]
+  source 'C:/vagrant/cookbooks/iWay8/files/Bonjour64.msi'
 end

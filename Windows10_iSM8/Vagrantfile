@@ -92,11 +92,9 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "chef_solo" do |chef|
     chef.custom_config_path = "CustomConfiguration.chef"
- #   chef.add_recipe "iWay8::mDNS"
- #   chef.roles_path = "roles"
- #   chef.add_role("has_OracleJava")
- #   chef.add_recipe "iWay8::rebootMachine"
     chef.add_recipe "java"
+    chef.add_recipe "iWay8::mDNS"
+#    chef.add_recipe "iWay8::rebootMachine"
     chef.json = JSON_Config
   end
 
